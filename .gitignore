@@ -1,0 +1,45 @@
+# Build results
+bin/
+obj/
+
+# Visual Studio / VS Code
+.vscode/
+*.user
+*.suo
+
+# Logs
+*.log
+logs/
+
+# Environment files
+*.env
+*.env.*
+
+# Dotnet artifacts
+*.dll
+*.exe
+*.pdb
+*.cache
+*.db
+*.db-shm
+*.db-wal
+
+# NuGet packages
+*.nupkg
+packages/
+
+# Docker
+docker-compose.override.yml
+docker-compose.*.yml
+.docker/
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+
+# Publish output
+publish/
