@@ -25,12 +25,14 @@ public class UserService
         return user; 
     }
 
-    public async Task RegisterUserAsync(string firstName, string lastName, string email, string password)
+    public async Task<User> RegisterUserAsync(string firstName, string lastName, string email, string password)
     {   
         var passwordHash = $"HASHED_{password}"; 
 
         var user = new User(firstName, lastName, email, passwordHash, UserRole.Client); 
 
         await _userRepository.AddAsync(user); 
+        
+        return user; 
     }
 }
