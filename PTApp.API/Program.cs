@@ -12,7 +12,7 @@ builder.Services.AddSwaggerGen();
 
 // Registrera databasen
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseInMemoryDatabase("PTApp"));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Koppla ihop interface med konkret implementation (DI)
 builder.Services.AddScoped<IUserRepository, UserRepository>();

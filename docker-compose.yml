@@ -1,0 +1,10 @@
+services:
+  postgres:                               # Tjänstens namn
+    image: postgres:16                    # Vilken image som används 
+    container_name: ptapp-db              # Namnet på containern
+    environment:                          # Miljövariabler
+      POSTGRES_USER: ptapp                # Användarnamn
+      POSTGRES_PASSWORD: ptapp132         # Lösenord
+      POSTGRES_DB: ptapp                  # databasnamn
+    ports:
+      - "5432:5432"                       # Mappar port 5432 lokalt till containern
