@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PTApp.API.DTO;
 using PTApp.Application.Services;
@@ -15,6 +16,7 @@ public class UsersController : ControllerBase
         _userService = userService;
     }
 
+    [Authorize]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetUser(Guid id)
     {

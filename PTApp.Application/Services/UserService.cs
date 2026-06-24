@@ -3,14 +3,15 @@ using PTApp.Domain.Entities;
 using PTApp.Domain.Enums;
 
 
-namespace PTApp.Application.Services;  
+namespace PTApp.Application.Services;
+
 public class UserService
 {
     private readonly IUserRepository _userRepository;
 
     public UserService(IUserRepository userRepository)
     {
-        _userRepository = userRepository; 
+        _userRepository = userRepository;
     }
 
     public async Task<User> GetUserByIdAsync(Guid id)
@@ -19,20 +20,25 @@ public class UserService
 
         if (user == null)
         {
-            throw new Exception($"User with id {id} not found"); 
+            throw new Exception($"User with id {id} not found");
         }
 
-        return user; 
+        return user;
     }
 
     public async Task<User> RegisterUserAsync(string firstName, string lastName, string email, string password)
-    {   
-        var passwordHash = $"HASHED_{password}"; 
+    {
+        var passwordHash = $"HASHED_{password}";
 
-        var user = new User(firstName, lastName, email, passwordHash, UserRole.Client); 
+        var user = new User(firstName, lastName, email, passwordHash, UserRole.Client);
 
-        await _userRepository.AddAsync(user); 
-        
-        return user; 
+        await _userRepository.AddAsync(user);
+
+        return user;
+    }
+
+    public async Task<User?> GetUserByEmailAsync(string email)
+    {
+        return await _userRepository.GetByEmailAsync(email);
     }
 }
