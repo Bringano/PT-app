@@ -30,7 +30,7 @@ public class AuthController : ControllerBase
                 return Unauthorized("Fel email eller lösenord");
             }
 
-            if (user.PasswordHash != $"HASHED_{loginDto.Password}")
+            if (!_userService.VerifyPassword(loginDto.Password, user.PasswordHash))
             {
                 return Unauthorized("Fel email eller lösenord"); 
             }

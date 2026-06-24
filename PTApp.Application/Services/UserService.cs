@@ -26,11 +26,11 @@ public class UserService
         return user;
     }
 
-    public async Task<User> RegisterUserAsync(string firstName, string lastName, string email, string password)
+    public async Task<User> RegisterUserAsync(string firstName, string lastName, string email, string password, UserRole role)
     {
-        var passwordHash = $"HASHED_{password}";
+        var passwordHash = BCrypt.Net.BCrypt.HashPassword(password);
 
-        var user = new User(firstName, lastName, email, passwordHash, UserRole.Client);
+        var user = new User(firstName, lastName, email, passwordHash, role);
 
         await _userRepository.AddAsync(user);
 
@@ -40,5 +40,10 @@ public class UserService
     public async Task<User?> GetUserByEmailAsync(string email)
     {
         return await _userRepository.GetByEmailAsync(email);
+    }
+
+    public bool VerifyPassword(string password, string passwordHash)
+    {
+        return BCrypt.Net.BCrypt.Verify(password, passwordHash); 
     }
 }

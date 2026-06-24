@@ -37,8 +37,24 @@ public class UsersController : ControllerBase
     {
         try
         {
-            var user = await _userService.RegisterUserAsync(dto.FirstName, dto.LastName, dto.Email, dto.Password); 
+            var user = await _userService.RegisterUserAsync(dto.FirstName, dto.LastName, dto.Email, dto.Password, dto.Role);
             return Ok(user);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+    [Authorize(Roles = "PT")]
+    [HttpGet("clients")]
+    public async Task<IActionResult> GetClients()
+    {
+        try
+        {
+            // Här kommer vi senare hämta klienter från databasen
+            // just nu returnerar vi bara ett meddelande
+            return Ok("Bara PT kan se detta!");
         }
         catch (Exception ex)
         {
