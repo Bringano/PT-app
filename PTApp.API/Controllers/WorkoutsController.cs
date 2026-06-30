@@ -116,4 +116,19 @@ public class WorkoutsController : ControllerBase
             return BadRequest(ex.Message); 
         }
     }
+
+    [Authorize]
+    [HttpGet("{id}/volume")]
+    public async Task<IActionResult> GetTotalVolume(Guid id)
+    {
+        try
+        {
+            var workout = await _workoutService.GetWorkoutVolumeAsync(id);
+            return Ok(workout);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message); 
+        }
+    }
 }

@@ -73,4 +73,26 @@ public class WorkoutService
         return workout; 
     }
 
+    public async Task<double> GetWorkoutVolumeAsync(Guid workoutId)
+    {
+        var workout = await _workoutRepository.GetByIdAsync(workoutId); 
+
+        if (workout == null)
+        {
+            throw new Exception($"Workout with id {workoutId} not found.");
+        }
+
+        double totalVolume = 0; 
+
+        foreach (var exerciseLog in workout.ExerciseLogs)
+        {
+            foreach (var set in exerciseLog.Sets)
+            {
+                double totalSetVolume = set.Reps * set.Weight; 
+                totalVolume += totalSetVolume; 
+            }
+        }
+        return totalVolume;
+    }
+
 }
