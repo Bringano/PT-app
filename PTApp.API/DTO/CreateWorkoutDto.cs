@@ -1,10 +1,11 @@
-namespace PTApp.API.DTO; 
+namespace PTApp.API.DTO;
 
 public class CreateWorkoutDto
 {
     public required string Name { get; set; }
     public DateTime Date { get; set; }
-    public Guid UserId { get; set; }
+    public List<CreateExerciseLogDto> Exercises { get; set; } = new(); 
+
 
 
 }

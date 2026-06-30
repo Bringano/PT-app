@@ -1,6 +1,9 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualBasic;
 using PTApp.API.DTO;
+using PTApp.Application.Models;
 using PTApp.Application.Services;
 
 namespace PTApp.API.Controllers;
@@ -18,11 +21,34 @@ public class WorkoutsController : ControllerBase
 
     [Authorize]
     [HttpPost]
-    public async Task<IActionResult> Register(CreateWorkoutDto dto)
+    public async Task<IActionResult> CreateWorkout(CreateWorkoutDto dto)
     {
         try
         {
-            var workout = await _workoutService.CreateWorkoutAsync(dto.Name, dto.Date, dto.UserId);
+            var userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
+            var exercises = new List<CreateExerciseLogRequest>(); 
+            
+            foreach (var exerciseDto in dto.Exercises)
+            {
+                var sets = new List<CreateSetRequest>(); 
+
+                foreach (var setDto in exerciseDto.Sets)
+                {
+                    sets.Add(new CreateSetRequest
+                    {
+                        Reps = setDto.Reps,
+                        Weight = setDto.Weight
+                    }); 
+                }
+
+                exercises.Add(new CreateExerciseLogRequest
+                {
+                    ExerciseName = exerciseDto.ExerciseName,
+                    Sets = sets
+                });
+            }
+            var workout = await _workoutService.CreateWorkoutAsync(dto.Name, dto.Date, userId, exercises);
             return Ok(workout);
         }
         catch (Exception ex)

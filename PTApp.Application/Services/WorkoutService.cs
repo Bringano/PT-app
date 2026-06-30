@@ -1,4 +1,5 @@
 using PTApp.Application.Interfaces;
+using PTApp.Application.Models;
 using PTApp.Domain.Entities;
 
 namespace PTApp.Application.Services;
@@ -37,9 +38,22 @@ public class WorkoutService
         await _workoutRepository.DeleteAsync(id); 
     }
 
-    public async Task<Workout> CreateWorkoutAsync(string name, DateTime date, Guid userId)
+    public async Task<Workout> CreateWorkoutAsync(string name, DateTime date, Guid userId, List<CreateExerciseLogRequest> exercises)
     {
         var workout = new Workout(name, date, userId); 
+
+        foreach (var exerciseRequest in exercises)
+        {
+            var exerciseLog = new ExerciseLog(exerciseRequest.ExerciseName, workout.Id);
+            
+            foreach (var setRequest in exerciseRequest.Sets)
+            {
+                var set = new Set(setRequest.Reps, setRequest.Weight, exerciseLog.Id);
+                exerciseLog.Sets.Add(set); 
+            }
+
+            workout.ExerciseLogs.Add(exerciseLog); 
+        }
         await _workoutRepository.AddAsync(workout); 
         return workout;
     }
