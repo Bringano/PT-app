@@ -32,11 +32,18 @@ public class WorkoutRepository : IWorkoutRepository
 
     public async Task<Workout?> GetByIdAsync(Guid id)
     {
-        return await _appDbContext.Workouts.FindAsync(id); 
+        return await _appDbContext.Workouts
+        .Include(w => w.ExerciseLogs)
+        .ThenInclude(e => e.Sets) 
+        .FirstOrDefaultAsync(w => w.Id == id);
     }
 
     public Task<List<Workout>> GetByUserIdAsync(Guid userId)
     {
-        return _appDbContext.Workouts.Where(w => w.UserId == userId).ToListAsync(); 
+        return _appDbContext.Workouts
+        .Include(w => w.ExerciseLogs)
+        .ThenInclude(e => e.Sets)
+        .Where(w => w.UserId == userId)
+        .ToListAsync(); 
     }
 }
