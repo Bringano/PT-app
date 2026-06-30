@@ -58,4 +58,19 @@ public class WorkoutService
         return workout;
     }
 
+    public async Task<Workout> UpdateWorkoutAsync(Guid id, string name, DateTime date)
+    {
+        var workout = await _workoutRepository.GetByIdAsync(id);
+
+        if (workout == null)
+        {
+            throw new Exception($"Workout with id {id} not found.");
+        }
+
+        workout.UpdateDetails(name, date);
+        await _workoutRepository.UpdateAsync(workout); 
+
+        return workout; 
+    }
+
 }

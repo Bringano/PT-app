@@ -30,6 +30,11 @@ public class WorkoutRepository : IWorkoutRepository
         }
     }
 
+    public async Task UpdateAsync(Workout workout)
+    {
+        _appDbContext.Workouts.Update(workout);
+        await _appDbContext.SaveChangesAsync();
+    }
     public async Task<Workout?> GetByIdAsync(Guid id)
     {
         return await _appDbContext.Workouts
@@ -46,4 +51,5 @@ public class WorkoutRepository : IWorkoutRepository
         .Where(w => w.UserId == userId)
         .ToListAsync(); 
     }
+
 }

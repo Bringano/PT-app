@@ -18,4 +18,15 @@ public class Workout
         Date = date;
         UserId = userId;
     }
+
+    public void UpdateDetails(string name, DateTime date)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new Exception("Namnet får inte vara tomt");
+        }
+        
+        Name = name;
+        Date = date;
+    }
 }

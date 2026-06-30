@@ -11,4 +11,6 @@ public interface IWorkoutRepository
     Task AddAsync(Workout workout); 
 
     Task DeleteAsync(Guid id); 
+
+    Task UpdateAsync(Workout workout);
 }

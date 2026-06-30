@@ -1,7 +1,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualBasic;
 using PTApp.API.DTO;
 using PTApp.Application.Models;
 using PTApp.Application.Services;
@@ -85,6 +84,36 @@ public class WorkoutsController : ControllerBase
         catch (Exception ex)
         {
             return NotFound(ex.Message); 
+        }
+    }
+
+    [Authorize]
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteWorkout(Guid id)
+    {
+        try
+        {
+            await _workoutService.DeleteWorkoutAsync(id); 
+            return Ok(); 
+        } 
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message); 
+        }
+    }
+
+    [Authorize]
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateWorkout(Guid id, UpdateWorkoutDto dto)
+    {
+        try
+        {
+            var workout = await _workoutService.UpdateWorkoutAsync(id, dto.Name, dto.Date);
+            return Ok(workout); 
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message); 
         }
     }
 }
